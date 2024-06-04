@@ -10,6 +10,7 @@
   ];
 in
   mkFlake {
+    inherit self;
     packages = p: {
       default = drv p;
       ${name} = drv p;
