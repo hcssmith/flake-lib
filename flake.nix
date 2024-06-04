@@ -25,5 +25,6 @@
         '';
       };
       packages = p: {generate-systems = p.generate-systems;};
+      lib = lib;
     };
 }
