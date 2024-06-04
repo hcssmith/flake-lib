@@ -2,12 +2,6 @@
   nixpkgs,
   systems,
 }: {
-  self,
-  overlay ? final: prev: {},
-  overlays ? [self.overlays.default],
-  nixConfig ? {allowUnfree = true;},
-  packages ? p: {default = p.hello;},
-  formatter ? p: p.alejandra,
   devShells ? p:
     with p; {
       default = mkShell {
@@ -15,6 +9,12 @@
         shellHook = "zsh";
       };
     },
+  formatter ? p: p.alejandra,
+  nixConfig ? {allowUnfree = true;},
+  overlay ? final: prev: {},
+  overlays ? [self.overlays.default],
+  packages ? p: {default = p.hello;},
+  self,
   ...
 } @ args: let
   forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -24,11 +24,12 @@
     )
   );
   filteredArgs = builtins.removeAttrs args [
+    "devShells"
+    "formatter"
+    "nixConfig"
     "overlay"
     "overlays"
-    "nixConfig"
     "packages"
-    "formatter"
     "self"
   ];
 
@@ -43,11 +44,11 @@
 in
   filteredArgs
   // {
-    packages = forAllSystems (system: (packages nixPkgsFor.${system}));
-    formatter = forAllSystems (system: (formatter nixPkgsFor.${system}));
     devShells = forAllSystems (system: (devShells nixPkgsFor.${system}));
+    formatter = forAllSystems (system: (formatter nixPkgsFor.${system}));
     overlays.default =
       if (builtins.isPath overlay)
       then genOverlay overlay
       else overlay;
+    packages = forAllSystems (system: (packages nixPkgsFor.${system}));
   }

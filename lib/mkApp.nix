@@ -1,12 +1,12 @@
 {mkFlake, ...}: {
-  self,
-  name,
   drv,
+  name,
+  self,
   ...
 } @ args: let
   filteredArgs = builtins.removeAttrs args [
-    "name"
     "drv"
+    "name"
   ];
 in
   mkFlake (filteredArgs
