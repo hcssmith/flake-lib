@@ -18,13 +18,12 @@
     };
   in
     lib.mkFlake {
-      inherit self;
+      inherit lib self;
       overlay = final: prev: {
         generate-systems = prev.writeShellScriptBin "generate-systems" ''
           nix-instantiate --json --eval --expr "with import <nixpkgs> {}; lib.platforms.all" | jq 'sort' | sed 's!,!!' > allSystems.nix
         '';
       };
       packages = p: {generate-systems = p.generate-systems;};
-      lib = lib;
     };
 }
