@@ -40,7 +40,8 @@
       }
   );
 in
-  {
+  filteredArgs
+  // {
     packages = forAllSystems (system: (packages nixPkgsFor.${system}));
     formatter = forAllSystems (system: (formatter nixPkgsFor.${system}));
     devShells = forAllSystems (system: (devShells nixPkgsFor.${system}));
@@ -49,4 +50,3 @@ in
       then genOverlay overlay
       else overlay;
   }
-  // filteredArgs
