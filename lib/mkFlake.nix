@@ -29,6 +29,7 @@
     "nixConfig"
     "packages"
     "formatter"
+    "self"
   ];
 
   nixPkgsFor = forAllSystems (
