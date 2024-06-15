@@ -13,8 +13,8 @@ in
     // {
       inherit self;
       packages = p: {
-        default = drv p;
-        ${name} = drv p;
+        default = p.${name};
+        ${name} = p.${name};
       };
       overlay = final: prev: {
         ${name} = drv prev;
